@@ -1,0 +1,27 @@
+NET "clk" LOC = AC18 | IOSTANDARD = LVCMOS18;
+//NET "RST" LOC = W13 | IOSTANDARD = LVCMOS18;
+NET "blue[0]"                                 LOC = T20       | IOSTANDARD = LVCMOS33 | SLEW = FAST ;
+NET "blue[1]"                                 LOC = R20       | IOSTANDARD = LVCMOS33 | SLEW = FAST ;
+NET "green[0]"                                 LOC = R22       | IOSTANDARD = LVCMOS33 | SLEW = FAST ;
+NET "green[1]"                                 LOC = R23       | IOSTANDARD = LVCMOS33 | SLEW = FAST ;
+NET "green[2]"                                 LOC = T24       | IOSTANDARD = LVCMOS33 | SLEW = FAST ;
+NET "red[0]"                                 LOC = N21       | IOSTANDARD = LVCMOS33 | SLEW = FAST ;
+NET "red[1]"                                 LOC = N22       | IOSTANDARD = LVCMOS33 | SLEW = FAST ;
+NET "red[2]"                                 LOC = R21       | IOSTANDARD = LVCMOS33 | SLEW = FAST ;
+NET "hsync"                                       LOC = M22       | IOSTANDARD = LVCMOS33 | SLEW = FAST ;
+NET "vsync"                                       LOC = M21       | IOSTANDARD = LVCMOS33 | SLEW = FAST ;
+
+NET "ps2_clk"	LOC = N18     	| IOSTANDARD = LVCMOS33 ; 
+NET "ps2_data"	LOC = M19     	| IOSTANDARD = LVCMOS33 ;
+
+NET "A[3]" LOC = AC22 | IOSTANDARD = LVCMOS33;
+NET "A[2]" LOC = AB21 | IOSTANDARD = LVCMOS33;
+NET "A[1]" LOC = AC21 | IOSTANDARD = LVCMOS33;
+NET "A[0]" LOC = AD21 | IOSTANDARD = LVCMOS33;
+NET "C[6]" LOC = AB22 | IOSTANDARD = LVCMOS33;
+NET "C[5]" LOC = AD24 | IOSTANDARD = LVCMOS33;
+NET "C[4]" LOC = AD23 | IOSTANDARD = LVCMOS33;
+NET "C[3]" LOC = Y21 | IOSTANDARD = LVCMOS33;
+NET "C[2]" LOC = W20 | IOSTANDARD = LVCMOS33;
+NET "C[1]" LOC = AC24 | IOSTANDARD = LVCMOS33;
+NET "C[0]" LOC = AC23 | IOSTANDARD = LVCMOS33;
