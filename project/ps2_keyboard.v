@@ -9,7 +9,7 @@
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
-// Description: 
+// Description: PS/2 keyboard Moduel for FPGA
 //
 // Dependencies: 
 //
@@ -26,12 +26,17 @@ module ps2_keyboard (input clk, clrn, ps2_clk, ps2_data, rdn,
   reg [9:0] buffer;     // ps2_data bits
   reg [7:0] fifo[7:0];   // data fifo
   reg [2:0] w_ptr, r_ptr;  // fifo write and read pointers
-  reg [2:0] ps2_clk_sync;
+  reg [2:0] ps2_clk_sync; //Syncronized ps2_clk for sampling data
 
+  //Synchronize the PS/2 clock to the system clock
   always @ (posedge clk) begin
     ps2_clk_sync <= {ps2_clk_sync[1:0],ps2_clk};
   end
+
+  //Determine the sampling edge based on the synchronized PS/2 clock
   wire sampling = ps2_clk_sync[2] & ~ps2_clk_sync[1];
+
+  // State machine for receiving PS/2 data
   always @ (posedge clk) begin
     if (clrn == 0) begin
         count <= 0;
@@ -53,11 +58,15 @@ module ps2_keyboard (input clk, clrn, ps2_clk, ps2_data, rdn,
                    count <= count + 3'b1;   // count ps2_data bits
             end
         end
+
+        // Process read request and update read pointer
         if (!rdn && ready) begin
           r_ptr <= r_ptr + 3'b1;
           overflow <= 0;
         end
    end
+
+   //Output assignments
 	assign ready = (w_ptr != r_ptr);
 	assign data = fifo[r_ptr];
 endmodule

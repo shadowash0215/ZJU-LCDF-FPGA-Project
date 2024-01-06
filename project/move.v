@@ -9,7 +9,8 @@
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
-// Description: 
+// Description: This module simulates the movement logic of the 2048 game. It takes input tile values representing the current state of the
+//              game, processes movement (up,down,left,right), and updates the game state in tilevalues. The resulting game state is stored in output tile values.
 //
 // Dependencies: 
 //
@@ -34,6 +35,7 @@ module move(
     integer j;
     reg [3:0] tilevals [0:3][0:3];
 
+    //Assign input tile values to the 4x4 array
     always @(*) begin
         tilevals[0][0] = input_tile_val[63:60];   
         tilevals[0][1] = input_tile_val[59:56];
@@ -52,6 +54,7 @@ module move(
         tilevals[3][2] = input_tile_val[7:4];
         tilevals[3][3] = input_tile_val[3:0];
 
+        //Reset the game state when rst is asserted
         if(rst) begin
             for(i=0;i<4;i=i+1)begin
                 for(j=0;j<4;j=j+1)begin
@@ -59,6 +62,7 @@ module move(
                 end
             end
         end
+        //Process down movement command
         else if (down) begin
             for(i=0;i<4;i=i+1) begin
                 if(tilevals[0][i]==4'd0) begin
@@ -86,18 +90,18 @@ module move(
                     end
                     else begin
                         if(tilevals[2][i]==4'd0)begin
-                            tilevals[2][i] = tilevals[3][i];
-                            tilevals[3][i] = 4'd0;
+                            tilevals[2][i]=tilevals[3][i];
+                            tilevals[3][i]=4'd0;
                         end
-                        else if (tilevals[2][i] == tilevals[3][i]) begin
-                            tilevals[2][i] = tilevals[2][i] + 4'd1;
-                            tilevals[3][i] = 4'd0;
+                        else if (tilevals[2][i]==tilevals[3][i]) begin
+                            tilevals[2][i]=tilevals[2][i]+4'd1;
+                            tilevals[3][i]=4'd0;
                         end
                     end
                 end
             end
         end
-        
+        //Process up momvement command
         else if (up) begin
             for(i=0; i<4; i=i+1) begin
                 if (tilevals[3][i] == 4'd0) begin
@@ -129,90 +133,93 @@ module move(
                             tilevals[0][i] = 4'd0;
                         end
                         else if (tilevals[1][i] == tilevals[0][i]) begin
-                            tilevals[1][i] = tilevals[1][i] + 4'd1;
-                            tilevals[0][i] = 4'd0;
+                            tilevals[1][i]=tilevals[1][i]+4'd1;
+                            tilevals[0][i]=4'd0;
                         end
                     end
                 end
             end
         end 
+        //Process left movement command
         else if (left) begin
             for(i=0; i<4; i=i+1) begin
-                if (tilevals[i][3] == 4'd0) begin
-                    tilevals[i][3] = tilevals[i][2];
-                    tilevals[i][2] = tilevals[i][1];
-                    tilevals[i][1] = tilevals[i][0];
-                    tilevals[i][0] = 4'd0;
+                if (tilevals[i][3]==4'd0) begin
+                    tilevals[i][3]=tilevals[i][2];
+                    tilevals[i][2]=tilevals[i][1];
+                    tilevals[i][1]=tilevals[i][0];
+                    tilevals[i][0]=4'd0;
                 end
                 else if (tilevals[i][3] == tilevals[i][2]) begin
-                    tilevals[i][3] = tilevals[i][3] + 4'd1;
-                    tilevals[i][2] = tilevals[i][1];
-                    tilevals[i][1] = tilevals[i][0];
-                    tilevals[i][0] = 4'd0;
+                    tilevals[i][3]=tilevals[i][3]+4'd1;
+                    tilevals[i][2]=tilevals[i][1];
+                    tilevals[i][1]=tilevals[i][0];
+                    tilevals[i][0]=4'd0;
                 end
                 else begin  
-                    if (tilevals[i][2] == 4'd0) begin
-                        tilevals[i][2] = tilevals[i][1];
-                        tilevals[i][1] = tilevals[i][0];
-                        tilevals[i][0] = 4'd0;
+                    if (tilevals[i][2]== 4'd0) begin
+                        tilevals[i][2]=tilevals[i][1];
+                        tilevals[i][1]=tilevals[i][0];
+                        tilevals[i][0]=4'd0;
                     end
-                    else if (tilevals[i][2] == tilevals[i][1]) begin
-                        tilevals[i][2] = tilevals[i][2] + 4'd1;
-                        tilevals[i][1] = tilevals[i][0];
-                        tilevals[i][0] = 4'd0;
+                    else if (tilevals[i][2]== tilevals[i][1]) begin
+                        tilevals[i][2]=tilevals[i][2]+4'd1;
+                        tilevals[i][1]=tilevals[i][0];
+                        tilevals[i][0]=4'd0;
                     end
                     else begin  
-                        if (tilevals[i][1] == 4'd0) begin
-                            tilevals[i][1] = tilevals[i][0];
-                            tilevals[i][0] = 4'd0;
+                        if (tilevals[i][1]==4'd0) begin
+                            tilevals[i][1]=tilevals[i][0];
+                            tilevals[i][0]=4'd0;
                         end
-                        else if (tilevals[i][1] == tilevals[i][0]) begin
-                            tilevals[i][1] = tilevals[i][1] + 4'd1;
-                            tilevals[i][0] = 4'd0;
+                        else if (tilevals[i][1]==tilevals[i][0]) begin
+                            tilevals[i][1]=tilevals[i][1]+4'd1;
+                            tilevals[i][0]=4'd0;
                         end
                     end
                 end
             end
         end 
+        //Process right movement command
         else if (right) begin
             for(i=0; i<4; i=i+1) begin  
-                if (tilevals[i][0] == 4'd0) begin
-                    tilevals[i][0] = tilevals[i][1];
-                    tilevals[i][1] = tilevals[i][2];
-                    tilevals[i][2] = tilevals[i][3];
-                    tilevals[i][3] = 4'd0;
+                if (tilevals[i][0]==4'd0) begin
+                    tilevals[i][0]=tilevals[i][1];
+                    tilevals[i][1]=tilevals[i][2];
+                    tilevals[i][2]=tilevals[i][3];
+                    tilevals[i][3]=4'd0;
                 end
-                else if (tilevals[i][0] == tilevals[i][1]) begin
-                    tilevals[i][0] = tilevals[i][0] + 4'd1;
-                    tilevals[i][1] = tilevals[i][2];
-                    tilevals[i][2] = tilevals[i][3];
-                    tilevals[i][3] = 4'd0;
+                else if (tilevals[i][0]==tilevals[i][1]) begin
+                    tilevals[i][0]=tilevals[i][0] + 4'd1;
+                    tilevals[i][1]=tilevals[i][2];
+                    tilevals[i][2]=tilevals[i][3];
+                    tilevals[i][3]=4'd0;
                 end
                 else begin  
-                    if (tilevals[i][1] == 4'd0) begin
-                        tilevals[i][1] = tilevals[i][2];
-                        tilevals[i][2] = tilevals[i][3];
-                        tilevals[i][3] = 4'd0;
+                    if (tilevals[i][1]==4'd0) begin
+                        tilevals[i][1]=tilevals[i][2];
+                        tilevals[i][2]=tilevals[i][3];
+                        tilevals[i][3]=4'd0;
                     end
-                    else if (tilevals[i][1] == tilevals[i][2]) begin
-                        tilevals[i][1] = tilevals[i][1] + 4'd1;
-                        tilevals[i][2] = tilevals[i][3];
-                        tilevals[i][3] = 4'd0;
+                    else if (tilevals[i][1]==tilevals[i][2]) begin
+                        tilevals[i][1]=tilevals[i][1] + 4'd1;
+                        tilevals[i][2]=tilevals[i][3];
+                        tilevals[i][3]=4'd0;
                     end
                     else begin  
-                        if (tilevals[i][2] == 4'd0) begin
-                            tilevals[i][2] = tilevals[i][3];
-                            tilevals[i][3] = 4'd0;
+                        if (tilevals[i][2]==4'd0) begin
+                            tilevals[i][2]=tilevals[i][3];
+                            tilevals[i][3]=4'd0;
                         end
-                        else if (tilevals[i][2] == tilevals[i][3]) begin
-                            tilevals[i][2] = tilevals[i][2] + 4'd1;
-                            tilevals[i][3] = 4'd0;
+                        else if (tilevals[i][2]==tilevals[i][3]) begin
+                            tilevals[i][2]=tilevals[i][2]+4'd1;
+                            tilevals[i][3]=4'd0;
                         end
                     end
                 end
             end
         end
 
+        //Update output tile values based on the resulting game state in tile values
         output_tile_val[63:60] = tilevals[0][0];
         output_tile_val[59:56] = tilevals[0][1];
         output_tile_val[55:52] = tilevals[0][2];

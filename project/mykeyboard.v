@@ -1,24 +1,22 @@
+//该模块定义了PS/2键盘输入功能，根据上下左右按键控制方块的移动，R按键重置游戏
+
 module mykeyboard(
   input wire clk,
-  input wire ps2_clk,
-  input wire ps2_data,
-  output wire BTN_BOT,
+  input wire ps2_clk, //PS/2 clock input
+  input wire ps2_data, //PS/2 data input
+  output wire BTN_BOT, //output for the top,bottom,left,right,reset button
     output wire BTN_TOP,
     output wire BTN_LEFT,
     output wire BTN_RIGHT,
     output wire RST
-);
+  );
 
-//   localparam NoKey = 4'b0000;
-//   localparam Up = 4'b0001;
-//   localparam Down = 4'b0010;
-//   localparam Left = 4'b0100;
-//   localparam Right = 4'b1000;
-//   localparam OtherKey = 4'b1111;
-
+  //Signals for PS/2 keyborad interface
   wire ready, overflow;
   wire [7:0] raw_data;
   reg [7:0] last_raw, data;
+
+  //Instantiate the PS/2 keyboard module
   ps2_keyboard ps2(clk, 1'b1, ps2_clk, ps2_data, 1'b0, raw_data, ready, overflow);
 
   always @(posedge clk) begin
@@ -33,12 +31,14 @@ module mykeyboard(
     end
   end
 
+  //Register for storing button states
   reg up;
   reg down;
   reg left;
   reg right;
   reg rst;
 
+  //Combinational logic block to determine button states based on data
   always @(*) begin
     case(data)
         8'h00: begin
@@ -93,17 +93,11 @@ module mykeyboard(
     endcase
   end
 
+    // Assign button states to the corresponding output ports
     assign BTN_RIGHT=right;
     assign BTN_LEFT=left;
     assign BTN_TOP=up;
     assign BTN_BOT=down;
     assign RST=rst;
 
-
-//   assign key = (data==8'h00)?NoKey:
-//                (data==8'h75)?Up:
-//                (data==8'h72)?Down:
-//                (data==8'h6b)?Left:
-//                (data==8'h74)?Right:
-//                OtherKey;
-endmodule
+endmodule
