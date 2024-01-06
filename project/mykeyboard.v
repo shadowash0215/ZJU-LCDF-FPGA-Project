@@ -27,8 +27,9 @@ module mykeyboard(
         data <= 8'h00;
       end else if (raw_data != 8'hf0) begin
         data <= raw_data;
-        last_raw<=raw_data;
+        //last_raw<=raw_data;
       end
+      last_raw <= raw_data;
     end
   end
 
@@ -45,35 +46,35 @@ module mykeyboard(
             down <= 1'b0;
             left <= 1'b0;
             right <= 1'b0;
-				rst <= 1'b0;
+				    rst <= 1'b0;
         end
         8'h75: begin
             up <= 1'b1;
             down <= 1'b0;
             left <= 1'b0;
             right <= 1'b0;
-				rst <= 1'b0;
+				    rst <= 1'b0;
         end
         8'h72: begin
             up <= 1'b0;
             down <= 1'b1;
             left <= 1'b0;
             right <= 1'b0;
-				rst <= 1'b0;
+				    rst <= 1'b0;
         end
         8'h6b: begin
             up <= 1'b0;
             down <= 1'b0;
             left <= 1'b1;
             right <= 1'b0;
-				rst <= 1'b0;
+				    rst <= 1'b0;
         end
         8'h74: begin
             up <= 1'b0;
             down <= 1'b0;
             left <= 1'b0;
             right <= 1'b1;
-				rst <= 1'b0;
+				    rst <= 1'b0;
         end
         8'h2d:begin
             up<=1'b0;
@@ -87,7 +88,7 @@ module mykeyboard(
             down <= 1'b0;
             left <= 1'b0;
             right <= 1'b0;
-				rst <= 1'b0;
+				    rst <= 1'b0;
         end
     endcase
   end
